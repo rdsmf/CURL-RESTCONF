@@ -1,0 +1,12 @@
+{
+  "ins_api": {
+    "version": "1.0",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "interface Ethernet1/1 ;switchport ;no shutdown ;switchport mode trunk ;channel-group 10 mode active ;interface port-channel 10 ;switchport mode 
+trunk ;vpc 10",
+    "output_format": "json"
+  }
+}
+

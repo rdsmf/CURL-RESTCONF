@@ -1,0 +1,6 @@
+#!/bin/bash
+# My test BASH script to run curl commands
+
+
+sudo curl -k -X POST -H "Content-Type: application/json" -k https://192.168.250.50/api/aaaLogin.json -d '{"aaaUser": {"attributes": {"name": "admin", "pwd": "Pl3xeCu73!"}}}' -c apic-cookie.text && sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode" | jq
+

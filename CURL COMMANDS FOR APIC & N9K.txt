@@ -1,0 +1,200 @@
+APIC CURL COMMANDS (CLI or Script)
+**********************************
+**********************************
+
+
+BASH SCRIPT TO RUN CURL COMMAND
+===============================
+/home/rdsmf/./SCRIPTS
+
+
+CURL POST LOGIN TO APIC (XML)
+=============================
+sudo curl -X POST -H "Content-Type: text/xml" -k https://192.168.250.50/api/aaaLogin.xml -d '<aaaUser name="admin" pwd="Pl3xeCu73!"/>' -c apic-cookie.text | jq
+
+
+CURL POST LOGIN TO APIC (JSON)
+==============================
+sudo curl -k -X POST -H "Content-Type: application/json" -k https://192.168.250.50/api/aaaLogin.json -d '{"aaaUser": {"attributes": {"name": "admin", "pwd": "Pl3xeCu73!"}}}' -c apic-cookie.text | jq
+
+
+CURL POST LOGIN TO N9K SWITCH (JSON)
+====================================
+sudo curl -k -X POST -H "Content-Type: application/json" -k https://192.168.250.1/api/mo/aaaLogin.json -d '{"aaaUser": {"attributes": {"name": "admin", "pwd": "Pl3xeCu73!"}}}' -c N9KSW-cookie.text | jq
+
+
+CURL POST LOGIN REFRESH
+=======================
+sudo curl -X POST -H "Content-Type: application/json" -k https://192.168.250.50/api/aaaRefresh.json -d '<aaaUser name="admin" pwd="Pl3xeCu73!"/>' | jq
+
+
+CURL GET FABRIC MEMBERSHIP
+==========================
+sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/node/class/topSystem.json?query-target=subtree&target-subtree-class=firmwareCtrlrRunning" | jq
+
+
+CURL GET CLUSTER HEALTH
+=======================
+sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode" | jq
+
+
+CURL GET OVERALL FABRIC HEALTH
+==============================
+sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/node/mo/topology/HDfabricOverallHealth5min-0.json" | jq
+
+
+CURL GET SHOW APIC VERSION
+==========================
+sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/node/class/fabricNode.json" | jq
+
+
+CURL GET SHOW ALL TENANTS
+=========================
+sudo curl -k -X GET -H "Content-Type: text/xml" -H "Cache-Control: no-cache" -b apic-cookie.text -H "Cache-Control: no-cache" "https://192.168.250.50/api/class/fvTenant.json" | jq
+
+
+CURL POST COMMAND WITH JSON DATA FILE - (jsonfile.json contains json code to pass to APIC)
+==========================================================================================
+sudo curl -b apic-cookie.txt -X POST -H "Content-Type: application/json" -k --data "@jsonfile.json" https://192.168.250.50/api/mo/uni.json | jq
+
+
+
+
+
+Example: Using the Nexus 9K JSON API with cURL
+**********************************************
+**********************************************
+
+
+
+(Display bootflash directory) - CURL COMMAND EXAMPLE (with password file)
+========================================================================
+sudo curl -X POST -H "Content-Type: text/xml" -H "Cache-Control: no-cache" --data "@TEST-DIR-BOOTFLASH.json" --netrc-file SAMPLE-PASSWORD-FILE "http://192.168.250.5/inst.json"
+
+or
+
+(Display bootflash directory from multiple switches) - CURL COMMAND EXAMPLE (with password file)
+================================================================================================
+sudo xargs curl -X POST -H "Content-Type: text/xml" -H "Cache-Control: no-cache" --data "@TEST-DIR-BOOTFLASH.json" --netrc-file SAMPLE-PASSWORD-FILE < TEST-URL-FILE
+
+
+
+
+
+
+
+(Display VNI Peers) - CURL COMMAND EXAMPLE (with clear text credentials)
+========================================================================
+sudo curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-PEER.json" -u admin:Pl3xeCu73! "http://192.168.250.5/inst.json" | jq
+
+or
+
+(Display VNI Peer from multiple switchess) - CURL COMMAND EXAMPLE (with clear text credentials)
+===============================================================================================
+sudo xargs curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-PEER.json" -u admin:Pl3xeCu73! < TEST-URL-FILE | jq
+
+
+
+
+
+
+
+(Display VNI Peers) - CURL COMMAND EXAMPLE (with password file)
+========================================================================
+sudo curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-PEER.json" --netrc-file SAMPLE-PASSWORD-FILE "http://192.168.250.5/inst.json" | jq
+
+or
+
+(Display VNI Peers from multiple switches) - CURL COMMAND EXAMPLE (with password file)
+======================================================================================
+sudo xargs curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-PEER.json" --netrc-file SAMPLE-PASSWORD-FILE < TEST-URL-FILE | jq
+
+
+
+
+
+
+
+
+(Display VXLAN VNI Allocation) - CURL COMMAND EXAMPLE (with password file)
+========================================================================
+sudo curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-ALLOCATION.json" --netrc-file SAMPLE-PASSWORD-FILE "http://192.168.250.5/inst.json" | jq
+
+or
+
+(Display VXLAN VNI Allocation from multiple switches) - CURL COMMAND EXAMPLE (with password file)
+=================================================================================================
+sudo xargs curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-ALLOCATION.json" --netrc-file SAMPLE-PASSWORD-FILE < TEST-URL-FILE | jq
+
+
+
+SAMPLE-PASSWORD-FILE
+==================
+machine 192.168.250.5 login admin password Pl3xeCu73!
+
+
+TEST-JSON-VNI-PEER.json data
+============================
+
+{
+  "ins_api": {
+    "version": "1.0",
+    "type": "cli_show",
+    "chunk": "0",
+    "sid": "1",
+    "input": "show nve peers detail",
+    "output_format": "json"
+  }
+}
+
+
+
+TEST-JSON-VNI-ALLOCATION.json data
+==================================
+
+{
+  "ins_api": {
+    "version": "1.0",
+    "type": "cli_show",
+    "chunk": "0",
+    "sid": "1",
+    "input": "show nve vni",
+    "output_format": "json"
+  }
+}
+
+
+
+PYTHON SCRIPT USING CURL POST COMMAND WITH JSON FILE & CREDENTIALS
+==================================================================
+import json
+import requests
+
+base_url = 'https://192.168.250.50/api/'
+
+# create credentials structure
+name_pwd = {'aaaUser': {'attributes': {'name': 'admin', 'pwd': 'Pl3xeCu73!'}}}
+json_credentials = json.dumps(name_pwd)
+
+# log in to API
+login_url = base_url + 'aaaLogin.json'
+post_response = requests.post(login_url, data=json_credentials)
+
+# get token from login response structure
+auth = json.loads(post_response.text)
+login_attributes = auth['imdata'][0]['aaaLogin']['attributes']
+auth_token = login_attributes['token']
+
+# create cookie array from token
+cookies = {}
+cookies['APIC-Cookie'] = auth_token
+
+# read a sensor, incorporating token in request
+sensor_url = base_url + 'node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode'
+get_response = requests.get(sensor_url, cookies=cookies, verify=False)
+
+# display sensor data structure
+print get_response.json()
+
+
+

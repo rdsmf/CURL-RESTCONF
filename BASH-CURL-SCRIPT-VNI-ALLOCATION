@@ -1,0 +1,6 @@
+#!/bin/bash
+# My test BASH script to run curl commands
+
+sudo curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-ALLOCATION.json" --netrc-file SAMPLE-PASSWORD-FILE "http://192.168.250.5/inst.json" | jq  && sudo curl -X POST -H "Content-Type: application/json" --data "@TEST-JSON-VNI-ALLOCATION.json" --netrc-file SAMPLE-PASSWORD-FILE "http://192.168.250.6/inst.json" | jq
+
+
