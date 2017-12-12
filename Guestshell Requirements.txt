@@ -1,0 +1,20 @@
+Cisco Nexus 9000 GuestShell Requirements
+========================================
+
+-	Resize guestshell rootfs / cpu / memory
+-	Enable guestshell (Other commands disable, rebbot, destroy)
+
+
+Guestshell Package Manager Requirements
+========================================
+
+-	sudo chvrf management yum install epel-release -y
+-	yum update	
+
+
+GUESTSHELL COMMANDS (CentOS Distro)
+===================
+
+-	dohost "[NXOS CLI]" - run NXOS CLI commands from guestshell
+-	sudo ip netns exec management - run linux commands through management VRF
+-	chvrf management [NXOS CLI] - run linux commands though management vrf
